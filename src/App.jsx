@@ -1,5 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
 
+// ── Google Sheets endpoint ─────────────────────────────────────────────────────
+// Paste your deployed Apps Script Web App URL here after setup
+const SHEET_ENDPOINT = '';
+
 // ── Brand ─────────────────────────────────────────────────────────────────────
 const C = {
   primary:   '#004d60',
@@ -401,7 +405,27 @@ export default function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
-    console.log('Lead captured:', { lead, inputs, offered });
+
+    if (SHEET_ENDPOINT) {
+      fetch(SHEET_ENDPOINT, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          schoolName:           lead.schoolName,
+          email:                lead.email,
+          platform:             lead.platform,
+          crm:                  lead.crm,
+          lastYearDonors:       inputs.lastYearDonors,
+          lastYearRevenue:      inputs.lastYearRevenue,
+          solicitableCommunity: inputs.solicitableCommunity,
+          participationGoal:    inputs.participationGoal,
+          revenueGoal:          inputs.revenueGoal,
+          offered,
+        }),
+      }).catch(() => {}); // fire-and-forget, never block the user
+    }
+
     setStep('results');
     window.scrollTo(0, 0);
   };
