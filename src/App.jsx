@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 
 // ── Google Sheets endpoint ─────────────────────────────────────────────────────
 // Paste your deployed Apps Script Web App URL here after setup
-const SHEET_ENDPOINT = '';
+const SHEET_ENDPOINT = 'https://script.google.com/a/macros/boostmyschool.com/s/AKfycbz21g93b41d8LT48kZPZLBTK4fUgYk6zVXrgkvAFzSKrPTXal7Eb48UhsMAm8LM_EO1/exec';
 
 // ── Brand ─────────────────────────────────────────────────────────────────────
 const C = {
