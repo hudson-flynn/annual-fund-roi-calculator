@@ -398,6 +398,8 @@ export default function App() {
     if (!lead.schoolName.trim())                     e.schoolName           = 'Required';
     if (!lead.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lead.email))
                                                      e.email                = 'Valid email required';
+    if (!lead.platform)                              e.platform             = 'Required';
+    if (!lead.crm)                                   e.crm                  = 'Required';
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -540,18 +542,20 @@ export default function App() {
               <FieldError msg={errors.email} />
             </div>
             <div>
-              <label htmlFor="platform" style={labelSt}>Current Fundraising Platform</label>
-              <select id="platform" value={lead.platform} onChange={(e) => setLead((p) => ({ ...p, platform: e.target.value }))} style={selectSt}>
+              <label htmlFor="platform" style={{ ...labelSt, color: errors.platform ? '#c0392b' : C.text }}>Current Fundraising Platform *</label>
+              <select id="platform" value={lead.platform} onChange={(e) => setLead((p) => ({ ...p, platform: e.target.value }))} style={{ ...selectSt, borderColor: errors.platform ? '#c0392b' : C.border }}>
                 <option value="">Select...</option>
                 {["Raiser's Edge / RE NXT","GiveCampus","Blackbaud (other)","Veracross","GiveSmart","Custom / In-house","Other","Not sure"].map((o) => <option key={o}>{o}</option>)}
               </select>
+              <FieldError msg={errors.platform} />
             </div>
             <div>
-              <label htmlFor="crm" style={labelSt}>Current CRM</label>
-              <select id="crm" value={lead.crm} onChange={(e) => setLead((p) => ({ ...p, crm: e.target.value }))} style={selectSt}>
+              <label htmlFor="crm" style={{ ...labelSt, color: errors.crm ? '#c0392b' : C.text }}>Current CRM *</label>
+              <select id="crm" value={lead.crm} onChange={(e) => setLead((p) => ({ ...p, crm: e.target.value }))} style={{ ...selectSt, borderColor: errors.crm ? '#c0392b' : C.border }}>
                 <option value="">Select...</option>
                 {["Raiser's Edge / RE NXT","Veracross","Blackbaud (other)","Salesforce","HubSpot","Other","Not sure"].map((o) => <option key={o}>{o}</option>)}
               </select>
+              <FieldError msg={errors.crm} />
             </div>
           </div>
 
