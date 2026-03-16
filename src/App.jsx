@@ -410,7 +410,7 @@ export default function App() {
       fetch(SHEET_ENDPOINT, {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({
           schoolName:           lead.schoolName,
           email:                lead.email,
