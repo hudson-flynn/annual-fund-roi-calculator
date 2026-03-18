@@ -384,11 +384,102 @@ export default function App() {
 
   const [lead, setLead]     = useState({ schoolName: '', email: '', platform: '', crm: '' });
   const [errors, setErrors] = useState({});
+  const [showModal, setShowModal] = useState(false);
 
   const calc = useCalc(inputs, offered);
 
   const setInput     = (k, v) => setInputs((p) => ({ ...p, [k]: v }));
   const toggleMethod = (id)   => setOffered((p) => ({ ...p, [id]: !p[id] }));
+
+  const methodologyLink = (
+    <button
+      type="button"
+      onClick={() => setShowModal(true)}
+      style={{
+        background: 'none', border: 'none', padding: 0, cursor: 'pointer',
+        color: C.primary, textDecoration: 'underline', fontSize: '0.85rem',
+        fontFamily: "'Open Sans', sans-serif",
+      }}
+    >
+      How do we calculate this?
+    </button>
+  );
+
+  const methodologyModal = showModal && (
+    <div
+      onClick={() => setShowModal(false)}
+      style={{
+        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        zIndex: 1000, padding: '20px', boxSizing: 'border-box',
+      }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          position: 'relative', backgroundColor: '#fff', borderRadius: 8,
+          maxWidth: 560, width: '100%', maxHeight: '90vh', overflowY: 'auto',
+          padding: '2rem', boxSizing: 'border-box',
+          boxShadow: '0 4px 24px rgba(0,0,0,0.2)',
+        }}
+      >
+        <button
+          onClick={() => setShowModal(false)}
+          style={{
+            position: 'absolute', top: '1rem', right: '1rem',
+            background: 'none', border: 'none', cursor: 'pointer',
+            fontSize: '1.4rem', color: '#535353', lineHeight: 1, padding: 4,
+            fontFamily: "'Open Sans', sans-serif",
+          }}
+        >
+          &times;
+        </button>
+
+        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#0D2B3E', margin: '0 0 16px 0', paddingRight: '2rem' }}>
+          How We Calculate Your Results
+        </h2>
+        <p style={{ fontSize: 14, color: '#535353', lineHeight: 1.65, margin: '0 0 0 0' }}>
+          This calculator estimates how many additional donors and dollars your annual fund could generate by accepting modern payment methods that most K-12 schools don't currently offer.
+        </p>
+
+        <h3 style={{ fontSize: 15, fontWeight: 700, color: '#0D2B3E', marginTop: '1.5rem', marginBottom: 10 }}>
+          The inputs we use:
+        </h3>
+        <p style={{ fontSize: 14, color: '#535353', lineHeight: 1.8, margin: 0 }}>
+          Your donor count and annual fund revenue from last year<br />
+          Your solicitable community size (the total number of households you could reach)<br />
+          Which modern payment methods your school currently accepts
+        </p>
+
+        <h3 style={{ fontSize: 15, fontWeight: 700, color: '#0D2B3E', marginTop: '1.5rem', marginBottom: 10 }}>
+          The assumptions behind the math:
+        </h3>
+        <p style={{ fontSize: 14, color: '#535353', lineHeight: 1.8, margin: 0 }}>
+          Roughly 50% of donors prefer to give using a modern payment method like Apple Pay, Venmo, ACH, or a donor-advised fund<br />
+          When a donor's preferred payment method isn't available, about 9% of them will abandon their gift entirely<br />
+          Each payment method has a different adoption rate and average gift size. For example, ACH and DAF donors tend to give significantly larger gifts than digital wallet donors.
+        </p>
+
+        <h3 style={{ fontSize: 15, fontWeight: 700, color: '#0D2B3E', marginTop: '1.5rem', marginBottom: 10 }}>
+          How we get to your number:
+        </h3>
+        <p style={{ fontSize: 14, color: '#535353', lineHeight: 1.65, margin: '0 0 12px 0' }}>
+          For each payment method your school doesn't currently offer, we calculate how many donors in your community would prefer that method, how many of those donors abandon when they can't use it, and what those missed gifts would have been worth. We add those up across all missing methods to get your total estimated lift in donors and dollars.
+        </p>
+        <p style={{ fontSize: 14, color: '#535353', lineHeight: 1.65, margin: 0 }}>
+          If your estimated new donor count would exceed the number of people in your solicitable community who haven't yet given, we cap the results to keep the estimate realistic.
+        </p>
+
+        <h3 style={{ fontSize: 15, fontWeight: 700, color: '#0D2B3E', marginTop: '1.5rem', marginBottom: 10 }}>
+          A note on precision:
+        </h3>
+        <p style={{ fontSize: 14, color: '#535353', lineHeight: 1.65, margin: 0 }}>
+          These are estimates based on industry-wide donor behavior data, not a guarantee. Your actual results will depend on your community, your outreach, and the timing of your campaigns. The goal of this calculator is to help you understand the general scale of what modern payment acceptance could mean for your annual fund, not to predict an exact dollar amount.
+        </p>
+      </div>
+    </div>
+  );
 
   const validate = () => {
     const e = {};
@@ -521,6 +612,9 @@ export default function App() {
                   <Toggle checked={offered[m.id]} onChange={() => toggleMethod(m.id)} />
                 </div>
               ))}
+              <div style={{ marginTop: 14 }}>
+                {methodologyLink}
+              </div>
             </div>
           </div>
         </div>
@@ -605,7 +699,7 @@ export default function App() {
         </p>
 
         {/* Primary numbers: revenue and donors side by side */}
-        <div style={{ display: 'flex', gap: isMobile ? 20 : 48, flexWrap: 'wrap', alignItems: 'flex-start', marginBottom: 28 }}>
+        <div style={{ display: 'flex', gap: isMobile ? 20 : 48, flexWrap: 'wrap', alignItems: 'flex-start', marginBottom: 16 }}>
           <div style={{ flex: '1 1 220px' }}>
             <p style={{ fontSize: isMobile ? 48 : 64, fontWeight: 700, margin: '0 0 6px 0', lineHeight: 1, color: C.accent }}>
               {fmt$(calc.increaseDollarsMedian)}
@@ -628,6 +722,20 @@ export default function App() {
               additional donors your giving page isn't capturing
             </p>
           </div>
+        </div>
+
+        <div>
+          <button
+            type="button"
+            onClick={() => setShowModal(true)}
+            style={{
+              background: 'none', border: 'none', padding: 0, cursor: 'pointer',
+              color: 'rgba(255,255,255,0.7)', textDecoration: 'underline', fontSize: '0.85rem',
+              fontFamily: "'Open Sans', sans-serif",
+            }}
+          >
+            How do we calculate this?
+          </button>
         </div>
 
       </div>
@@ -758,6 +866,7 @@ export default function App() {
       {header}
       {step === 'form' ? formScreen : resultsScreen}
       {footer}
+      {methodologyModal}
     </div>
   );
 }
