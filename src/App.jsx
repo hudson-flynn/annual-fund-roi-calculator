@@ -95,7 +95,7 @@ function MethodIcon({ id, width = 80, height = 50 }) {
         backgroundColor: isApple ? '#000' : '#fff',
         border: isApple ? 'none' : `1.5px solid ${C.border}`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: isApple ? 10 : 8, boxSizing: 'border-box', overflow: 'hidden',
+        padding: isApple ? 6 : 4, boxSizing: 'border-box', overflow: 'hidden',
       }}>
         <img src={logoMap[id]} alt={id.replace(/_/g, ' ')}
           style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', filter: isApple ? 'invert(1)' : 'none' }} />
@@ -604,7 +604,7 @@ export default function App() {
             {METHODS.map((m) => (
               <div key={m.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: `1px solid ${C.border}` }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <MethodIcon id={m.id} width={52} height={32} />
+                  <MethodIcon id={m.id} width={72} height={44} />
                   <span style={{ fontSize: 13, fontWeight: 500, color: C.text }}>{m.label}</span>
                 </div>
                 <Toggle checked={offered[m.id]} onChange={() => toggleMethod(m.id)} />
