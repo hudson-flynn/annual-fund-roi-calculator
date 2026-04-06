@@ -565,62 +565,60 @@ export default function App() {
             How much is your school leaving on the table?
           </h1>
           <p style={{ fontSize: 15, color: C.muted, margin: '0 auto', maxWidth: 560, lineHeight: 1.65 }}>
-            Enter your numbers to see how much additional revenue modern payment methods could unlock for your annual fund.
+            Enter your school's numbers to see a personalized breakdown of how much additional revenue you could be capturing.
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: 24, flexDirection: isMobile ? 'column' : 'row', alignItems: 'flex-start' }}>
-
-          {/* School numbers */}
-          <div style={{ flex: 1 }}>
-            <div style={card}>
-              <h2 style={{ fontSize: 16, fontWeight: 700, color: C.primary, margin: '0 0 20px 0' }}>Your School's Numbers</h2>
-              {[
-                { id: 'lastYearDonors',       label: "Last Year's Donors",              dollar: false, placeholder: 'e.g. 650' },
-                { id: 'lastYearRevenue',      label: "Last Year's Annual Fund Revenue",  dollar: true,  placeholder: 'e.g. 500000' },
-                { id: 'solicitableCommunity', label: 'Solicitable Community Size',       dollar: false, placeholder: 'e.g. 5000', helper: 'Total households you could reach' },
-                { id: 'participationGoal',    label: "This Year's Participation Goal",   dollar: false, placeholder: 'e.g. 700', optional: true },
-                { id: 'revenueGoal',          label: "This Year's Revenue Goal",         dollar: true,  placeholder: 'e.g. 600000', optional: true },
-              ].map((f) => (
-                <div key={f.id} style={{ marginBottom: 16 }}>
-                  <label htmlFor={f.id} style={{ ...labelSt, color: errors[f.id] ? '#c0392b' : C.text }}>
-                    {f.label}{f.optional && <span style={{ fontWeight: 400, color: C.muted }}> (optional)</span>}
-                  </label>
-                  {f.dollar
-                    ? <DollarInput id={f.id} value={inputs[f.id]} onChange={(v) => setInput(f.id, v)} placeholder={f.placeholder} hasError={!!errors[f.id]} />
-                    : <TextInput   id={f.id} value={inputs[f.id]} onChange={(v) => setInput(f.id, v)} placeholder={f.placeholder} hasError={!!errors[f.id]} />}
-                  {f.helper && <p style={{ fontSize: 12, color: C.muted, margin: '4px 0 0 0' }}>{f.helper}</p>}
-                  <FieldError msg={errors[f.id]} />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Payment methods */}
-          <div style={{ flex: 1 }}>
-            <div style={card}>
-              <h2 style={{ fontSize: 16, fontWeight: 700, color: C.primary, margin: '0 0 6px 0' }}>Payment Methods You Currently Offer</h2>
-              <p style={{ fontSize: 13, color: C.muted, margin: '0 0 18px 0', lineHeight: 1.55 }}>
-                Toggle on any methods your school already accepts. Most schools using Blackbaud or similar platforms don't offer any of these.
-              </p>
-              {METHODS.map((m) => (
-                <div key={m.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '11px 0', borderBottom: `1px solid ${C.border}` }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <MethodIcon id={m.id} width={64} height={40} />
-                    <span style={{ fontSize: 14, fontWeight: 500, color: C.text }}>{m.label}</span>
-                  </div>
-                  <Toggle checked={offered[m.id]} onChange={() => toggleMethod(m.id)} />
-                </div>
-              ))}
-              <div style={{ marginTop: 14 }}>
-                {methodologyLink}
+        {/* School numbers */}
+        <div style={card}>
+          <h2 style={{ fontSize: 16, fontWeight: 700, color: C.primary, margin: '0 0 20px 0' }}>Your School's Numbers</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr 1fr', gap: 16 }}>
+            {[
+              { id: 'lastYearDonors',       label: "Last Year's Donors",              dollar: false, placeholder: 'e.g. 650', required: true },
+              { id: 'lastYearRevenue',      label: "Last Year's Annual Fund Revenue",  dollar: true,  placeholder: 'e.g. 500000', required: true },
+              { id: 'solicitableCommunity', label: 'Solicitable Community Size',       dollar: false, placeholder: 'e.g. 5000', helper: 'Total households you could reach', required: true },
+              { id: 'participationGoal',    label: "This Year's Participation Goal",   dollar: false, placeholder: 'e.g. 700', optional: true },
+              { id: 'revenueGoal',          label: "This Year's Revenue Goal",         dollar: true,  placeholder: 'e.g. 600000', optional: true },
+            ].map((f) => (
+              <div key={f.id} style={{ marginBottom: 0 }}>
+                <label htmlFor={f.id} style={{ ...labelSt, color: errors[f.id] ? '#c0392b' : C.text }}>
+                  {f.label}{f.required && <span style={{ color: '#c0392b' }}> *</span>}{f.optional && <span style={{ fontWeight: 400, color: C.muted }}> (optional)</span>}
+                </label>
+                {f.dollar
+                  ? <DollarInput id={f.id} value={inputs[f.id]} onChange={(v) => setInput(f.id, v)} placeholder={f.placeholder} hasError={!!errors[f.id]} />
+                  : <TextInput   id={f.id} value={inputs[f.id]} onChange={(v) => setInput(f.id, v)} placeholder={f.placeholder} hasError={!!errors[f.id]} />}
+                {f.helper && <p style={{ fontSize: 12, color: C.muted, margin: '4px 0 0 0' }}>{f.helper}</p>}
+                <FieldError msg={errors[f.id]} />
               </div>
-            </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Payment methods */}
+        <div style={card}>
+          <h2 style={{ fontSize: 14, fontWeight: 700, color: C.primary, margin: '0 0 6px 0' }}>Payment Methods You Currently Offer</h2>
+          <p style={{ fontSize: 12, color: C.muted, margin: '0 0 14px 0', lineHeight: 1.55 }}>
+            Toggle on any methods your school already accepts. Most schools using Blackbaud or similar platforms don't offer any of these.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 12 }}>
+            {METHODS.map((m) => (
+              <div key={m.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: `1px solid ${C.border}` }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <MethodIcon id={m.id} width={52} height={32} />
+                  <span style={{ fontSize: 13, fontWeight: 500, color: C.text }}>{m.label}</span>
+                </div>
+                <Toggle checked={offered[m.id]} onChange={() => toggleMethod(m.id)} />
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: 12 }}>
+            {methodologyLink}
           </div>
         </div>
 
         {/* Contact form */}
         <div style={{ ...card, borderTop: `3px solid ${C.accent}` }}>
+          <p style={{ fontSize: 14, color: C.primary, fontWeight: 600, margin: '0 0 8px 0' }}>Almost there, just a couple more details!</p>
           <h2 style={{ fontSize: 16, fontWeight: 700, color: C.primary, margin: '0 0 4px 0' }}>Tell us about your school</h2>
           <p style={{ fontSize: 13, color: C.muted, margin: '0 0 20px 0' }}>Enter your details below to see your results.</p>
 
