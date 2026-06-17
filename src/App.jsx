@@ -6,9 +6,9 @@ const SHEET_ENDPOINT = 'https://script.google.com/a/macros/boostmyschool.com/s/A
 
 // ── Brand ─────────────────────────────────────────────────────────────────────
 const C = {
-  primary:   '#004d60',
+  primary:   '#044D5E',
   secondary: '#d2fdfe',
-  accent:    '#aafcc0',
+  accent:    '#ABFFC1',
   bg:        '#ffffff',
   text:      '#1a2e35',
   muted:     '#5a7a85',
@@ -41,7 +41,7 @@ const METHOD_COLORS = {
   google_pay: '#4285F4',
   venmo:      '#008CFF',
   paypal:     '#002991',
-  ach:        '#004d60',
+  ach:        '#044D5E',
   daf:        '#2e7d32',
 };
 
@@ -62,7 +62,7 @@ const inputBase = {
   width: '100%',
   boxSizing: 'border-box',
   outline: 'none',
-  fontFamily: "'Open Sans', sans-serif",
+  fontFamily: "'Circular Std', sans-serif",
   color: C.text,
   backgroundColor: '#fff',
 };
@@ -359,8 +359,8 @@ function useCalc(inputs, offered) {
 }
 
 // ── Boost My School website header (mirrors boostmyschool.com) ─────────────────
-const BOOST_TEAL = '#004d60';
-const BOOST_MINT = '#aafcc0';
+const BOOST_TEAL = '#044D5E';
+const BOOST_MINT = '#ABFFC1';
 
 const BOOST_PLATFORM = [
   { title: 'Plans', desc: "Boost offers plans to fit every K-12 school's needs.", href: 'https://www.boostmyschool.com/plans' },
@@ -501,7 +501,7 @@ export default function App() {
       style={{
         background: 'none', border: 'none', padding: 0, cursor: 'pointer',
         color: C.primary, textDecoration: 'underline', fontSize: '0.85rem',
-        fontFamily: "'Open Sans', sans-serif",
+        fontFamily: "'Circular Std', sans-serif",
       }}
     >
       How do we calculate this?
@@ -533,7 +533,7 @@ export default function App() {
             position: 'absolute', top: '1rem', right: '1rem',
             background: 'none', border: 'none', cursor: 'pointer',
             fontSize: '1.4rem', color: '#535353', lineHeight: 1, padding: 4,
-            fontFamily: "'Open Sans', sans-serif",
+            fontFamily: "'Circular Std', sans-serif",
           }}
         >
           &times;
@@ -746,7 +746,7 @@ export default function App() {
           <button type="submit" style={{
             width: '100%', padding: '14px 24px', backgroundColor: C.primary, color: '#fff',
             border: 'none', borderRadius: 8, fontSize: 16, fontWeight: 700,
-            cursor: 'pointer', fontFamily: "'Open Sans', sans-serif", letterSpacing: 0.3,
+            cursor: 'pointer', fontFamily: "'Circular Std', sans-serif", letterSpacing: 0.3,
           }}>
             Show My Results
           </button>
@@ -773,7 +773,7 @@ export default function App() {
         <button onClick={() => { setStep('form'); window.scrollTo(0, 0); }} style={{
           backgroundColor: 'transparent', border: `1px solid ${C.border}`,
           borderRadius: 6, padding: '8px 16px', fontSize: 13, color: C.muted,
-          cursor: 'pointer', fontFamily: "'Open Sans', sans-serif",
+          cursor: 'pointer', fontFamily: "'Circular Std', sans-serif",
         }}>
           Recalculate
         </button>
@@ -821,7 +821,7 @@ export default function App() {
             style={{
               background: 'none', border: 'none', padding: 0, cursor: 'pointer',
               color: 'rgba(255,255,255,0.7)', textDecoration: 'underline', fontSize: '0.85rem',
-              fontFamily: "'Open Sans', sans-serif",
+              fontFamily: "'Circular Std', sans-serif",
             }}
           >
             How do we calculate this?
@@ -952,7 +952,7 @@ export default function App() {
   );
 
   return (
-    <div style={{ fontFamily: "'Open Sans', sans-serif", color: C.text, backgroundColor: C.bg, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ fontFamily: "'Circular Std', sans-serif", color: C.text, backgroundColor: C.bg, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       {header}
       {step === 'form' ? formScreen : resultsScreen}
       {footer}
