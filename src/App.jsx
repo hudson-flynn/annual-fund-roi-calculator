@@ -358,17 +358,116 @@ function useCalc(inputs, offered) {
   }, [inputs, offered]);
 }
 
+// ── Boost My School website header (mirrors boostmyschool.com) ─────────────────
+const BOOST_TEAL = '#004d60';
+const BOOST_MINT = '#aafcc0';
+
+const BOOST_PLATFORM = [
+  { title: 'Plans', desc: "Boost offers plans to fit every K-12 school's needs.", href: 'https://www.boostmyschool.com/plans' },
+  { title: 'Ask Boost AI', desc: 'The AI Chat that unlocks the data trapped in your CRM.', href: 'https://www.boostmyschool.com/landing-pages/ask-boost' },
+  { title: 'Boost Marketing', desc: 'The email, text, and QR tool designed to bring in more gifts.', href: 'https://www.boostmyschool.com/landing-pages/boost-marketing' },
+  { title: 'Boost Giving', desc: 'See the only giving platform built for K-12 schools.', href: 'https://www.boostmyschool.com/landing-pages/giving' },
+  { title: 'Boost Auctions', desc: 'See the only auction platform built for K-12 schools.', href: 'https://www.boostmyschool.com/landing-pages/auctions' },
+  { title: 'Platform Overview', desc: 'The only giving, events, and auction platform built for K-12.', href: 'https://www.boostmyschool.com/use-cases' },
+  { title: 'Examples of Boost Pages', desc: 'See giving, event, and auction pages that bring in more with Boost.', href: 'https://www.boostmyschool.com/use-cases' },
+  { title: 'Meet our Partner Schools', desc: 'See what K-12 schools partner with Boost.', href: 'https://www.boostmyschool.com/ambassadors' },
+];
+const BOOST_RESOURCES = [
+  { title: 'Boost My School Library', desc: 'The advancement resource catalog where you exchange ideas with peers.', href: 'https://www.boostmyschool.com/library' },
+  { title: 'Boost My School Blog', desc: 'Read the latest in institutional advancement.', href: 'https://www.boostmyschool.com/blog/resources' },
+  { title: 'Fundraising Tips', desc: 'Tips and ideas for K-12 and higher-ed advancement teams.', href: 'https://www.boostmyschool.com/blog/resources' },
+  { title: 'Newsletter', desc: 'Get the latest advancement, marketing, and event hosting tips delivered straight to your inbox.', href: 'https://www.boostmyschool.com/blog/signup' },
+];
+const BOOST_ABOUT = [
+  { title: 'Our Team and Story', desc: "At Boost, we're passionate about helping schools.", href: 'https://www.boostmyschool.com/about' },
+  { title: 'Careers', desc: "We're hiring! See openings on our remote team and read about our impact-driven culture.", href: 'https://www.boostmyschool.com/careers' },
+];
+
+function BoostMegaMenu({ items, columns, align }) {
+  return (
+    <div style={{ position: 'absolute', top: '100%', [align === 'right' ? 'right' : 'left']: 0, paddingTop: 14, zIndex: 1200 }}>
+      <div style={{ background: '#fff', borderRadius: 16, boxShadow: '0 14px 44px rgba(0,0,0,0.16)', padding: '28px 32px', width: columns === 2 ? 600 : 330, display: 'grid', gridTemplateColumns: columns === 2 ? '1fr 1fr' : '1fr', gap: '22px 36px' }}>
+        {items.map((it) => (
+          <a key={it.title} href={it.href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', display: 'block' }}>
+            <div style={{ color: BOOST_TEAL, fontWeight: 700, fontSize: 16, marginBottom: 4 }}>{it.title}</div>
+            <div style={{ color: '#6b7b85', fontSize: 13.5, lineHeight: 1.45 }}>{it.desc}</div>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function BoostSiteHeader() {
+  const [open, setOpen] = useState(null);
+  const [w, setW] = useState(window.innerWidth);
+  useEffect(() => {
+    const h = () => setW(window.innerWidth);
+    window.addEventListener('resize', h);
+    return () => window.removeEventListener('resize', h);
+  }, []);
+  const wide = w >= 1100;
+
+  const chev = (o) => (
+    <svg width="11" height="7" viewBox="0 0 11 7" style={{ marginLeft: 6, transform: o ? 'rotate(180deg)' : 'none', transition: 'transform .15s' }}>
+      <path d="M1 1l4.5 4.5L10 1" fill="none" stroke={BOOST_TEAL} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+
+  const navItem = (key, label, items, columns, align) => (
+    <div style={{ position: 'relative', display: 'flex', alignItems: 'center', height: '100%' }}
+      onMouseEnter={() => setOpen(key)} onMouseLeave={() => setOpen(null)}>
+      <button style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: BOOST_TEAL, fontSize: 16, fontWeight: 600, fontFamily: 'inherit', padding: 0 }}>
+        {label}{chev(open === key)}
+      </button>
+      {open === key && <BoostMegaMenu items={items} columns={columns} align={align} />}
+    </div>
+  );
+
+  return (
+    <div style={{ position: 'sticky', top: 0, zIndex: 1000, flexShrink: 0 }}>
+      <div style={{ height: 6, background: BOOST_TEAL }} />
+      <header style={{ background: '#fff', height: 76, padding: wide ? '0 40px' : '0 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 1px 6px rgba(0,0,0,0.06)' }}>
+        <a href="https://www.boostmyschool.com" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+          <img src="https://cdn.prod.website-files.com/652980774c06816d70cfe2a1/652d72c60eb93db154e6bdd8_Boost%20Primary%20Loho.svg" alt="Boost My School" style={{ height: wide ? 30 : 22, display: 'block' }} />
+        </a>
+
+        {wide && (
+          <nav style={{ display: 'flex', alignItems: 'center', gap: 22, height: '100%' }}>
+            <a href="https://www.boostmyschool.com/landing-pages/ask-boost" target="_blank" rel="noopener noreferrer"
+              style={{ background: BOOST_TEAL, borderRadius: 8, padding: '10px 18px', textDecoration: 'none', fontSize: 15, fontWeight: 700, whiteSpace: 'nowrap' }}>
+              <span style={{ color: BOOST_MINT }}>New: </span><span style={{ color: '#fff' }}>Ask Boost AI</span>
+            </a>
+            {navItem('platform', 'Platform', BOOST_PLATFORM, 2, 'left')}
+            {navItem('resources', 'Resources', BOOST_RESOURCES, 1, 'left')}
+            {navItem('about', 'About Us', BOOST_ABOUT, 1, 'right')}
+          </nav>
+        )}
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: wide ? 24 : 12, flexShrink: 0 }}>
+          {wide && (
+            <a href="https://www.boostmyschool.com/accounts/log-in" target="_blank" rel="noopener noreferrer"
+              style={{ color: BOOST_TEAL, fontSize: 16, fontWeight: 600, textDecoration: 'none' }}>
+              Log In
+            </a>
+          )}
+          <a href="https://www.boostmyschool.com/demo" target="_blank" rel="noopener noreferrer"
+            style={{ background: BOOST_MINT, color: BOOST_TEAL, borderRadius: 8, padding: '11px 20px', textDecoration: 'none', fontSize: 14, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.04em', whiteSpace: 'nowrap' }}>
+            See a Demo
+          </a>
+        </div>
+      </header>
+    </div>
+  );
+}
+
 // ── App ───────────────────────────────────────────────────────────────────────
 export default function App() {
   const [step, setStep]         = useState('form');
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const [showNav, setShowNav]   = useState(window.innerWidth >= 1024);
 
   useEffect(() => {
-    const h = () => {
-      setIsMobile(window.innerWidth <= 768);
-      setShowNav(window.innerWidth >= 1024);
-    };
+    const h = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener('resize', h);
     return () => window.removeEventListener('resize', h);
   }, []);
@@ -534,52 +633,7 @@ export default function App() {
   };
 
   // ── Shared header / footer ───────────────────────────────────────────────────
-  // Boost My School website header bar (mirrors boostmyschool.com)
-  const navLinks = [
-    { label: 'Plans',             href: 'https://www.boostmyschool.com/plans' },
-    { label: 'Boost Giving',      href: 'https://www.boostmyschool.com/landing-pages/giving' },
-    { label: 'Boost Marketing',   href: 'https://www.boostmyschool.com/landing-pages/boost-marketing' },
-    { label: 'Platform Overview', href: 'https://www.boostmyschool.com/use-cases' },
-    { label: 'Partner Schools',   href: 'https://www.boostmyschool.com/ambassadors' },
-  ];
-
-  const header = (
-    <header style={{
-      backgroundColor: '#fff', padding: isMobile ? '0 16px' : '0 28px', height: 64,
-      display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0,
-      position: 'sticky', top: 0, zIndex: 500,
-      borderBottom: `1px solid ${C.border}`, boxShadow: '0 1px 4px rgba(0,77,96,0.06)',
-    }}>
-      <a href="https://www.boostmyschool.com" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
-        <img src="https://cdn.prod.website-files.com/652980774c06816d70cfe2a1/652d72c60eb93db154e6bdd8_Boost%20Primary%20Loho.svg"
-          alt="Boost My School" style={{ height: 26, display: 'block' }} />
-      </a>
-
-      {showNav && (
-        <nav style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
-          {navLinks.map((l) => (
-            <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
-              style={{ color: C.text, fontSize: 14, fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>
-              {l.label}
-            </a>
-          ))}
-        </nav>
-      )}
-
-      <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 12 : 18, flexShrink: 0 }}>
-        {!isMobile && (
-          <a href="https://www.boostmyschool.com/accounts/log-in" target="_blank" rel="noopener noreferrer"
-            style={{ color: C.text, fontSize: 14, fontWeight: 600, textDecoration: 'none' }}>
-            Log In
-          </a>
-        )}
-        <a href="https://www.boostmyschool.com/demo" target="_blank" rel="noopener noreferrer"
-          style={{ color: '#fff', fontWeight: 700, fontSize: 14, textDecoration: 'none', backgroundColor: C.primary, borderRadius: 6, padding: '9px 18px', whiteSpace: 'nowrap' }}>
-          See a demo
-        </a>
-      </div>
-    </header>
-  );
+  const header = <BoostSiteHeader />;
 
   const footer = (
     <footer style={{ textAlign: 'center', padding: '18px 24px', borderTop: `1px solid ${C.border}`, fontSize: 13, color: C.muted }}>
