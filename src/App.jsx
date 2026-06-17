@@ -407,6 +407,13 @@ function BoostSiteHeader() {
     return () => window.removeEventListener('resize', h);
   }, []);
   const wide = w >= 1100;
+  const [mobileOpen, setMobileOpen] = useState(false);
+  useEffect(() => { if (wide) setMobileOpen(false); }, [wide]);
+  const SECTIONS = [
+    { label: 'Platform', items: BOOST_PLATFORM },
+    { label: 'Resources', items: BOOST_RESOURCES },
+    { label: 'About Us', items: BOOST_ABOUT },
+  ];
 
   const chev = (o) => (
     <svg width="11" height="7" viewBox="0 0 11 7" style={{ marginLeft: 6, transform: o ? 'rotate(180deg)' : 'none', transition: 'transform .15s' }}>
@@ -444,19 +451,48 @@ function BoostSiteHeader() {
           </nav>
         )}
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: wide ? 24 : 12, flexShrink: 0 }}>
-          {wide && (
+        {wide ? (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexShrink: 0 }}>
             <a href="https://www.boostmyschool.com/accounts/log-in" target="_blank" rel="noopener noreferrer"
               style={{ color: BOOST_TEAL, fontSize: 16, fontWeight: 600, textDecoration: 'none' }}>
               Log In
             </a>
-          )}
-          <a href="https://www.boostmyschool.com/demo" target="_blank" rel="noopener noreferrer"
-            style={{ background: BOOST_MINT, color: BOOST_TEAL, borderRadius: 8, padding: '11px 20px', textDecoration: 'none', fontSize: 14, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.04em', whiteSpace: 'nowrap' }}>
-            See a Demo
-          </a>
-        </div>
+            <a href="https://www.boostmyschool.com/demo" target="_blank" rel="noopener noreferrer"
+              style={{ background: BOOST_MINT, color: BOOST_TEAL, borderRadius: 8, padding: '11px 20px', textDecoration: 'none', fontSize: 14, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.04em', whiteSpace: 'nowrap' }}>
+              See a Demo
+            </a>
+          </div>
+        ) : (
+          <button aria-label="Menu" aria-expanded={mobileOpen} onClick={() => setMobileOpen((o) => !o)}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 8, display: 'flex', flexDirection: 'column', gap: 5, flexShrink: 0 }}>
+            <span style={{ width: 26, height: 3, borderRadius: 2, background: BOOST_TEAL, transition: 'transform .2s', transform: mobileOpen ? 'translateY(8px) rotate(45deg)' : 'none' }} />
+            <span style={{ width: 26, height: 3, borderRadius: 2, background: BOOST_TEAL, transition: 'opacity .2s', opacity: mobileOpen ? 0 : 1 }} />
+            <span style={{ width: 26, height: 3, borderRadius: 2, background: BOOST_TEAL, transition: 'transform .2s', transform: mobileOpen ? 'translateY(-8px) rotate(-45deg)' : 'none' }} />
+          </button>
+        )}
       </header>
+
+      {!wide && mobileOpen && (
+        <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, background: '#fff', boxShadow: '0 14px 30px rgba(0,0,0,0.16)', borderTop: '1px solid #eee', maxHeight: 'calc(100vh - 82px)', overflowY: 'auto', padding: '18px 20px 28px', zIndex: 1200 }}>
+          <a href="https://www.boostmyschool.com/landing-pages/ask-boost" target="_blank" rel="noopener noreferrer" onClick={() => setMobileOpen(false)}
+            style={{ display: 'block', textAlign: 'center', background: BOOST_TEAL, borderRadius: 8, padding: '12px 18px', textDecoration: 'none', fontSize: 15, fontWeight: 700 }}>
+            <span style={{ color: BOOST_MINT }}>New: </span><span style={{ color: '#fff' }}>Ask Boost AI</span>
+          </a>
+          {SECTIONS.map((sec) => (
+            <div key={sec.label} style={{ marginTop: 18 }}>
+              <div style={{ color: BOOST_TEAL, fontWeight: 700, fontSize: 12, textTransform: 'uppercase', letterSpacing: '.07em', opacity: 0.6, marginBottom: 6 }}>{sec.label}</div>
+              {sec.items.map((it) => (
+                <a key={it.title} href={it.href} target="_blank" rel="noopener noreferrer" onClick={() => setMobileOpen(false)}
+                  style={{ display: 'block', color: '#1a2e35', fontSize: 16, fontWeight: 600, textDecoration: 'none', padding: '9px 0' }}>{it.title}</a>
+              ))}
+            </div>
+          ))}
+          <a href="https://www.boostmyschool.com/accounts/log-in" target="_blank" rel="noopener noreferrer" onClick={() => setMobileOpen(false)}
+            style={{ display: 'block', color: '#1a2e35', fontSize: 16, fontWeight: 600, textDecoration: 'none', padding: '14px 0 0' }}>Log In</a>
+          <a href="https://www.boostmyschool.com/demo" target="_blank" rel="noopener noreferrer" onClick={() => setMobileOpen(false)}
+            style={{ display: 'block', textAlign: 'center', marginTop: 16, background: BOOST_MINT, color: BOOST_TEAL, borderRadius: 8, padding: '13px 20px', textDecoration: 'none', fontSize: 14, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.04em' }}>See a Demo</a>
+        </div>
+      )}
     </div>
   );
 }
