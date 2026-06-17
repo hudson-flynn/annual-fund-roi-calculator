@@ -362,9 +362,13 @@ function useCalc(inputs, offered) {
 export default function App() {
   const [step, setStep]         = useState('form');
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [showNav, setShowNav]   = useState(window.innerWidth >= 1024);
 
   useEffect(() => {
-    const h = () => setIsMobile(window.innerWidth <= 768);
+    const h = () => {
+      setIsMobile(window.innerWidth <= 768);
+      setShowNav(window.innerWidth >= 1024);
+    };
     window.addEventListener('resize', h);
     return () => window.removeEventListener('resize', h);
   }, []);
@@ -530,16 +534,50 @@ export default function App() {
   };
 
   // ── Shared header / footer ───────────────────────────────────────────────────
+  // Boost My School website header bar (mirrors boostmyschool.com)
+  const navLinks = [
+    { label: 'Plans',             href: 'https://www.boostmyschool.com/plans' },
+    { label: 'Boost Giving',      href: 'https://www.boostmyschool.com/landing-pages/giving' },
+    { label: 'Boost Marketing',   href: 'https://www.boostmyschool.com/landing-pages/boost-marketing' },
+    { label: 'Platform Overview', href: 'https://www.boostmyschool.com/use-cases' },
+    { label: 'Partner Schools',   href: 'https://www.boostmyschool.com/ambassadors' },
+  ];
+
   const header = (
     <header style={{
-      backgroundColor: C.primary, color: '#fff', padding: '0 24px', height: 60,
+      backgroundColor: '#fff', padding: isMobile ? '0 16px' : '0 28px', height: 64,
       display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0,
+      position: 'sticky', top: 0, zIndex: 500,
+      borderBottom: `1px solid ${C.border}`, boxShadow: '0 1px 4px rgba(0,77,96,0.06)',
     }}>
-      <span style={{ fontSize: 16, fontWeight: 700 }}>Annual Fund ROI Calculator</span>
-      <a href="https://www.boostmyschool.com/demo" target="_blank" rel="noopener noreferrer"
-        style={{ color: C.primary, fontWeight: 700, fontSize: 13, textDecoration: 'none', backgroundColor: C.accent, borderRadius: 5, padding: '6px 14px' }}>
-        Book a Demo
+      <a href="https://www.boostmyschool.com" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+        <img src="https://cdn.prod.website-files.com/652980774c06816d70cfe2a1/652d72c60eb93db154e6bdd8_Boost%20Primary%20Loho.svg"
+          alt="Boost My School" style={{ height: 26, display: 'block' }} />
       </a>
+
+      {showNav && (
+        <nav style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
+          {navLinks.map((l) => (
+            <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
+              style={{ color: C.text, fontSize: 14, fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+              {l.label}
+            </a>
+          ))}
+        </nav>
+      )}
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 12 : 18, flexShrink: 0 }}>
+        {!isMobile && (
+          <a href="https://www.boostmyschool.com/accounts/log-in" target="_blank" rel="noopener noreferrer"
+            style={{ color: C.text, fontSize: 14, fontWeight: 600, textDecoration: 'none' }}>
+            Log In
+          </a>
+        )}
+        <a href="https://www.boostmyschool.com/demo" target="_blank" rel="noopener noreferrer"
+          style={{ color: '#fff', fontWeight: 700, fontSize: 14, textDecoration: 'none', backgroundColor: C.primary, borderRadius: 6, padding: '9px 18px', whiteSpace: 'nowrap' }}>
+          See a demo
+        </a>
+      </div>
     </header>
   );
 
